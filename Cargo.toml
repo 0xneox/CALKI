@@ -1,0 +1,18 @@
+[workspace]
+members = ["devtools"
+,"jsonrpc"
+,"chain"
+,"chain/core"
+,"chain/types"
+,"consensus/tdmint"
+,"network"
+,"tests/trans_evm"
+,"tests/chain_performance"
+,"tests/amqp/request"
+,"tests/amqp/response"
+]
+exclude = [
+"share_libs/parity"
+]
+
+
