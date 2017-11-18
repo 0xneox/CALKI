@@ -11,7 +11,7 @@ members = ["devtools"
 ,"tests/amqp/request"
 ,"tests/amqp/response"
 ]
-exclude = [
+exclude =[
 "share_libs/parity"
 ]
 
