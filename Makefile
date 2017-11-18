@@ -25,7 +25,7 @@ release:
 
 
 setup1:
-	apt-get update -q
+       apt-get update -q
 	apt-get install --allow-change-held-packages software-properties-common
 	if [ $$(lsb_release -s -c) = "trusty" ]; then add-apt-repository ppa:chris-lea/libsodium -y ; fi;
 	apt-get update -q
