@@ -23,7 +23,7 @@ make clean
 
 # For native machine, skip this step.
 # echo "################################################################################"
-# echo "2) setup"
+# echo "2)setup"
 # sudo make setup1
 # make setup2
 
