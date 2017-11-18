@@ -1,0 +1,25 @@
+[package]
+name = "network"
+version = "0.6.0"
+
+
+[dependencies]
+clap = "2"
+toml = "0.2"
+rustc-serialize = "0.3"
+futures = "0.1"
+futures-cpupool = "0.1"
+tokio-io = "0.1"
+byteorder = "1.0.0"
+tokio-proto = "0.1"
+tokio-service = "0.1"
+log = "0.3"
+dotenv = "0.10.0"
+bytes = "0.4"
+notify = "4.0.0"
+libproto = { path = "../share_libs/proto" }
+protobuf = { version = "^1.0.0"}
+util = { path = "../share_libs/util"}
+pubsub = { path = "../share_libs/pubsub" }
+logger = { path = "../share_libs/logger" }
+rand = "0.3.*"
