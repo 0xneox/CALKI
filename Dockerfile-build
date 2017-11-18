@@ -16,4 +16,4 @@ RUN useradd -m calki																			\
 ENV PATH $PATH:/root/.cargo/bin:/sources/bin
 WORKDIR /sources
 # CMD make setup \
-# 	&& make release
+# && make release
