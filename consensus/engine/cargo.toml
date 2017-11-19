@@ -1,0 +1,13 @@
+[package]
+name = "engine"
+version = "0.6.0"
+authors = ["<neohex262@gmail.com>"]
+
+[dependencies]
+libproto = {path = "../../share_libs/proto"}
+util = {path = "../../share_libs/util"}
+protobuf = { version = "^1.0.0" }
+calki-crypto = { path = "../../share_libs/crypto" }
+engine_json = { path = "../json" }
+proof = { path = "../proof" }
+pubsub = { path = "../../share_libs/pubsub" }
