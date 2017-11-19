@@ -1,4 +1,4 @@
-3// CALKI
+// CALKI
 // Copyright 2016-2017 Zibbit Labs.
 
 // This program is free software: you can redistribute it
