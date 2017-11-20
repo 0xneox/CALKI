@@ -1,0 +1,16 @@
+[package]
+name = "calki-crypto"
+version = "0.1.0"
+authors = ["<jikz>"]
+
+[dependencies]
+calki-ed25519 = { path = "../ed25519", optional = true }
+calki-secp256k1 = { path = "../secp256k1", optional = true }
+calki-sm2 = { path = "../sm2", optional = true }
+util = { path = "../util" }
+
+[features]
+default = ["secp256k1"]
+ed25519 = ["calki-ed25519"]
+secp256k1 = ["calki-secp256k1"]
+sm2 = ["calki-sm2"]
