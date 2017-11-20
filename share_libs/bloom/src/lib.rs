@@ -34,7 +34,6 @@ struct BitVecJournal {
     elems: Vec<u64>,
     journal: HashSet<usize>,
 }
-
 impl BitVecJournal {
     pub fn new(size: usize) -> BitVecJournal {
         let extra = if size % 8 > 0 { 1 } else { 0 };
