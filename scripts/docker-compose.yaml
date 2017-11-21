@@ -1,0 +1,100 @@
+version: '2'
+
+services:
+  admin:
+    container_name: admin
+    image: zibbit/play
+    hostname: admin
+    # environment:
+    volumes:
+      - ./:/data
+    networks:
+      main:
+        aliases:
+          - admin
+    command: sh -c 'admintool.sh -l node0:4000,node1:4000,node2:4000,node3:4000'
+
+  node0:
+    container_name: node0    
+    image: zibbit/play
+    hostname: node0
+    # environment:
+    volumes:
+      - ./node0:/data/node0
+    ports:
+      - "4000:4000"
+      - "1337:1337"
+    networks:
+      main:
+        aliases:
+          - node0
+    command: sh -c 'calki setup node0; calki start node0; calki logs node0 chain'
+
+  node1:
+    container_name: node1
+    image: zibbit/play
+    hostname: node1
+    # environment:
+    volumes:
+      - ./node1:/data/node1
+    networks:
+      main:
+        aliases:
+          - node1
+    # ports:
+    #   - "4000:4000"
+    #   - "1337:1337"
+    command: sh -c 'calki setup node1; calki start node1; calki logs node1 chain'
+
+  node2:
+    container_name: node2
+    image: zibbit/play
+    hostname: node2
+    # environment:
+    volumes:
+      - ./node2:/data/node2
+    networks:
+      main:
+        aliases:
+          - node2
+    # ports:
+    #   - "4000:4000"
+    #   - "1337:1337"
+    command: sh -c 'calki setup node2; calki start node2; calki logs node2 chain'
+
+  node3:
+    container_name: node3
+    image: zibbit/play
+    hostname: node3
+    # environment:
+    volumes:
+      - ./node3:/data/node3
+    networks:
+      main:
+        aliases:
+          - node3
+    # ports:
+    #   - "4000:4000"
+    #   - "1337:1337"
+    command: sh -c 'calki setup node3; calki start node3; calki logs node3 chain'
+
+  test:
+    container_name: test
+    image: zibbit/play
+    hostname: test
+    # environment:
+    volumes:
+      - ./test:/data
+    networks:
+      main:
+        aliases:
+          - test
+    links:
+      - node0
+      - node1
+      - node2
+      - node3
+    command: bash 
+
+networks:
+  main:

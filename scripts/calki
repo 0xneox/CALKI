@@ -1,0 +1,171 @@
+#!/bin/bash
+set -e
+sudo(){
+    set -o noglob
+
+    if [ "$(whoami)" == "root" ] ; then
+        $*
+    else
+        /usr/bin/sudo $*
+    fi
+    set +o noglob
+}
+
+setup() {
+    # config rabbitmq
+    ps -C rabbitmq-server                                                  > /dev/null || sudo /etc/init.d/rabbitmq-server restart > /dev/null
+    sudo rabbitmqctl list_vhosts | grep ${node}                            > /dev/null && sudo rabbitmqctl delete_vhost ${node}    > /dev/null
+    sudo rabbitmqctl add_vhost ${node}                                     > /dev/null
+    sudo rabbitmqctl set_permissions -p ${node} guest '.*' '.*' '.*'       > /dev/null
+    sudo rabbitmq-plugins enable rabbitmq_management                       > /dev/null
+
+    # setup env
+    sudo sed -i '/fs.inotify.max_user_watches/'d /etc/sysctl.conf
+    sudo sed -i '/fs.inotify.max_user_instances/'d /etc/sysctl.conf
+    sudo sed -i '$a\fs.inotify.max_user_watches=100000\' /etc/sysctl.conf
+    sudo sed -i '$a\fs.inotify.max_user_instances=8192\' /etc/sysctl.conf
+
+    sudo sysctl -w fs.inotify.max_user_watches=100000
+    sudo sysctl -w fs.inotify.max_user_instances=8192
+
+}
+
+start() {
+    debug=$1
+
+    mkdir -p logs
+
+    # clean queues
+    curl -i -u guest:guest -H "content-type:application/json" -XDELETE http://localhost:15672/api/queues/${node}/auth               > /dev/null 2>&1 || true
+    curl -i -u guest:guest -H "content-type:application/json" -XDELETE http://localhost:15672/api/queues/${node}/chain              > /dev/null 2>&1 || true
+    curl -i -u guest:guest -H "content-type:application/json" -XDELETE http://localhost:15672/api/queues/${node}/consensus          > /dev/null 2>&1 || true
+    curl -i -u guest:guest -H "content-type:application/json" -XDELETE http://localhost:15672/api/queues/${node}/jsonrpc            > /dev/null 2>&1 || true
+    curl -i -u guest:guest -H "content-type:application/json" -XDELETE http://localhost:15672/api/queues/${node}/network            > /dev/null 2>&1 || true
+    curl -i -u guest:guest -H "content-type:application/json" -XDELETE http://localhost:15672/api/queues/${node}/network_tx         > /dev/null 2>&1 || true
+    curl -i -u guest:guest -H "content-type:application/json" -XDELETE http://localhost:15672/api/queues/${node}/network_consensus  > /dev/null 2>&1 || true
+
+    if [ -z ${debug} ]; then
+        
+        monitor start > /dev/null
+    else                                        
+        RUST_LOG=auth,network,consensus_tendermint,proof,txpool,engine,libproto,jsonrpc,jsonrpc_types,chain,core=${debug} \
+        monitor start > /dev/null                                       
+    fi
+}
+
+clean() {
+    # backup and clean data&log
+    backup_dir=$(date -Iseconds)/
+    if [[ -e data && -e logs ]] ; then
+        mkdir ${backup_dir}
+    fi
+    if [ -e data ] ; then
+        mv data ${backup_dir}
+    fi
+    if [ -e logs ] ; then
+        mv logs ${backup_dir}
+    fi
+}
+
+stop() {
+    monitor stop > /dev/null
+}
+
+status() {
+    for pid_file in `find . -name "*.pid"`; do
+        pid=$(cat ${pid_file})
+        ps -A -o command=50,pid,time|grep ${pid} |grep -v "grep" || true        
+    done
+        
+}
+
+logs() {
+    service=$1
+    tail -f logs/${service}.log
+}
+
+stat() {
+    stat_cmd="pidstat -r -u -d"
+    for pid_file in `find . -name "*.pid"`; do
+        pid=$(cat ${pid_file})
+        stat_cmd=$stat_cmd" -p ${pid}"
+    done
+    while [ 1 ]; do
+        $stat_cmd
+        echo
+        echo "disk usage bytes $(du -s ./data)"
+        sleep 3
+    done
+}
+
+usage(){
+    echo "      usage: $0 COMMAND node_dir [args...]"
+    echo "      Commands:"
+    echo "      setup            setup calki run environment"
+    echo "      start            start calki"
+    echo "      stop             stop calki"
+    echo "      restart          restart calki"
+    echo "      status           display calki process status"
+    echo "      logs             display calki's service(jsonrpc/chain/consensus/network/auth) logs"
+    echo "      clean            backup and clean calki data&log file"
+    echo "      stat             display calki's cpu/ram/io/disk information"
+    echo "      usage            display help information"
+}
+
+SCRIPT_DIR=$(dirname $(readlink -f $0))
+export PATH=$PATH:${SCRIPT_DIR}/../bin
+
+if [ $# -gt 3 ];
+then
+    help
+else
+    node=$2
+    pushd . > /dev/null
+    if [ ! -e ${node} ] ; then
+        echo "no such directory: ${node}"
+        exit 1
+    fi
+    cd ${node}
+    case $1 in
+        setup)
+            setup
+            ;;
+        start)
+            stop > /dev/null 2>&1 || true
+            debug=$3
+            start ${debug}
+            ;;
+        stop)
+            stop
+            ;;
+        restart)
+            stop ||true
+            debug=$3
+            start ${debug}
+            ;;
+        status)
+            status
+            ;;
+        logs)
+            if [ $# -ne 3 ]; then
+                echo "usage: $0 logs node service"
+                exit 1
+            fi
+            service=$3
+            logs ${service}
+            ;;
+        stat)
+            stat
+            ;;
+        clean)
+            clean
+            ;;
+        help)
+            usage
+            ;;
+        *)
+            usage
+            ;;
+    esac
+    popd > /dev/null
+fi
