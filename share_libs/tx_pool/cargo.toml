@@ -1,0 +1,9 @@
+[package]
+name = "tx_pool"
+version = "0.6.0"
+authors = ["<neohex262@gmail.com>"]
+
+[dependencies]
+libproto = { path = "../proto" }
+util = { path = "../util" }
+calki-crypto = { path = "../crypto" }
