@@ -18,7 +18,8 @@ The above is a common test process, the actual test process requires multiple ca
 
 ### Consensus Node Management
 
-#### Test Function 1: Add Consensus Node
+#### Test Function 1: 
+Add Consensus Node
 * (The process needs to call the permissions system contract to get the hair trading permissions) *
 
 Process and data structure:
@@ -132,7 +133,8 @@ python make_tx.py --to "00000000000000000000000000000000013241a2" --code "ddad2f
   "gasUsed": "0x56b0"
 }
 ```
-see step 2 
+*see step 2*
+
 6. python get_receit.py
 
 ```
@@ -165,9 +167,9 @@ see step 2
 }
 ```
 
-* `data`: The event recorded during the call to the contract method, in contrast to the data when the transaction was constructed. check `0x000000000000000000000000d3f1a71d1d8f073f4e725f57bbe14d67da22f888` is the test address.
+* data: The event recorded during the call to the contract method, in contrast to the data when the transaction was constructed. check `0x000000000000000000000000d3f1a71d1d8f073f4e725f57bbe14d67da22f888` is the test address.
 
-7. Call `approve` to upgrade the test address to a consensus node address
+7. Call approve to upgrade the test address to a consensus node address
 
 ```
 python make_tx.py --to "00000000000000000000000000000000013241a2" --code "dd4c97a0000000000000000000000000d3f1a71d1d8f073f4e725f57bbe14d67da22f888" --privkey "5f0258a4778057a8a7d97809bd209055b2fbafa654ce7d31ec7191066b9225e6"
@@ -292,8 +294,126 @@ python make_tx.py --to "00000000000000000000000000000000013241a4" --code "301da8
 ```
 
 *see step3*
+
 4. By setting the quota address to set the quota operation, the test set quota `0x2b0ce58`.
 ```
+*see step1*
+
+5. `python send_tx.py`. RESULT:
+
+```
+{"jsonrpc":"2.0","id":1,"result":{"hash":"0xed8ba4616d4486d7dd83cb5fb8a4eb15fe4795b5b57068f56436bf80437aaeb6","status":"Ok"}}
+```
+
+*see step2*
+
+6. `python get_receipt.py`. RESULT:
+
+```
+{
+  "contractAddress": null,
+  "cumulativeGasUsed": "0x1e7f",
+  "logs": [
+    {
+      "blockHash": "0x03fe137252067d396f83196187d2d0651d182bd1c05b047f5784e3c5bf5a7a9f",
+      "transactionHash": "0xed8ba4616d4486d7dd83cb5fb8a4eb15fe4795b5b57068f56436bf80437aaeb6",
+      "transactionIndex": "0x0",
+      "topics": [
+        "0x8b477181257c0ad079608a1cd6f3031245b413eb3036d8e12c1038b3a5dfe9db",
+        "0x6163636f756e744761734c696d69740000000000000000000000000000000000",
+        "0x0000000000000000000000000000000000000000000000000000000002b0ce58",
+        "0x000000000000000000000000d3f1a71d1d8f073f4e725f57bbe14d67da22f888"
+      ],
+      "blockNumber": "0x23",
+      "address": "0x00000000000000000000000000000000013241a3",
+      "transactionLogIndex": "0x0",
+      "logIndex": "0x0",
+      "data": "0x"
+    }
+  ],
+  "blockHash": "0x03fe137252067d396f83196187d2d0651d182bd1c05b047f5784e3c5bf5a7a9f",
+  "transactionHash": "0xed8ba4616d4486d7dd83cb5fb8a4eb15fe4795b5b57068f56436bf80437aaeb6",
+  "root": null,
+  "errorMessage": null,
+  "blockNumber": "0x23",
+  "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000002000000000400000000000000000000000000000000000200000000000000000000010000020000000000000000000000000000000000000000400000000000000000000000000000000004000000000000002000000080100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000080004000000000000000",
+  "transactionIndex": "0x0",
+  "gasUsed": "0x1e7f"
+}
+```
+*topics* - event parameter for index
+
+7. `chain.log`
+
+```
+20171012 20:07:24 - TRACE - account_gas_limit: 45141592
+```
+
+*check the account gas limit: 45141592*
+
+8. eth_call getAccountGasLimit
+
+```
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_call", "params":[{"to":"0x00000000000000000000000000000000013241a3", "data":"0xdae99b3a"}, "latest"],"id":2}' 127.0.0.1:1337
+```
+
+*see step0*
+
+RESULT:
+
+```
+{"jsonrpc":"2.0","id":2,"result":"0x0000000000000000000000000000000000000000000000000000000002b0ce58"}
+```
+
+`check the result`
+
+9. set tx quota 999999999
+* Need to modify quota value in make_tx.py *
+
+```
+python make_tx.py --privkey "352416e1c910e413768c51390dfd791b414212b7b4fe6b1a18f58007fa894214" --code "606060405234156100105760006000fd5b610015565b610148806100246000396000f30060606040526000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b11461004e5780636d4ce63c1461007257610048565b60006000fd5b341561005a5760006000fd5b610070600480803590602001909190505061009c565b005b341561007e5760006000fd5b61008661010a565b6040518082815260200191505060405180910390f35b60006000620186a09150600090505b818110156100cd578060006000508190909055505b80806001019150506100ab565b7fdf7a95aebff315db1b7716215d602ab537373cdb769232aae6055c06e798425b836040518082815260200191505060405180910390a15b505050565b60006000600050549050610119565b905600a165627a7a72305820dbeea32b7d59673d43cc6915f194839ee2561c032a57d7d46ed8433972fd34a20029"
+```
+
+*see step1*
+
+10. `python send_tx.py`
+
+```
+{"jsonrpc":"2.0","id":1,"result":{"hash":"0xfd3899c486542758c618546ff0f24fe60173b25ad64b82632b86da17515312de","status":"Ok"}}
+```
+
+*see step2*
+
+11. `python get_receipt.py`
+
+```
+{
+  "contractAddress": "0x73552bc4e960a1d53013b40074569ea05b950b4d",
+  "cumulativeGasUsed": "0x0",
+  "logs": [],
+  "blockHash": "0xe05ebf44c5eabe62f9dfe82d0c2b82cd02e8e6763f3f142b11a47a712cc46976",
+  "transactionHash": "0xfd3899c486542758c618546ff0f24fe60173b25ad64b82632b86da17515312de",
+  "root": null,
+  "errorMessage": "Account gas limit reached.",
+  "blockNumber": "0x324",
+  "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  "transactionIndex": "0x0",
+  "gasUsed": "0x0"
+}
+```
+
+* errorMessage: check Account gas limit reached.
+
+### test to send duplicate transactionsConstruct the same nonce and valid_until_block, the same transaction,
+the result is as follows:
+* Modify make_tx.py script *
+
+```
+{"jsonrpc":"2.0","id":1,"error":{"code":6,"message":"TxResponse {hash: 1db3aa32e45986232c182e8d84cd68e1342618f87782236d33745cc102fe5af3, status: \"Dup\" }"}}
+```
+
+* `status`:` Dup` is a duplicate transaction
+
 python make_tx.py --to "00000000000000000000000000000000013241a3" --code "c9bcec770000000000000000000000000000000000000000000000000000000002b0ce58" --privkey "61b760173f6d6b87726a28b93d7fcb4b4f842224921de8fa8e49b983a3388c03"
 ```
 
