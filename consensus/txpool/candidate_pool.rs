@@ -46,10 +46,9 @@ impl CandidatePool {
     pub fn get_height(&self) -> u64 {
         self.height
     }
-
-   
-
-    
+    pub fn meet_conditions(&self, height: u64) -> bool {
+        self.height
+    }
     pub fn broadcast_tx(&self, tx_req: &Request) {
         let msg = factory::create_msg(submodules::CONSENSUS, topics::REQUEST, communication::MsgType::REQUEST, tx_req.write_to_bytes().unwrap());
         trace!("broadcast new tx {:?}", tx_req);
