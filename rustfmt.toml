@@ -13,5 +13,5 @@ reorder_imports=true
 format_strings=true
 hard_tabs=false
 wrap_match_arms=false
-write_mode="Overwrite"
+write_mode= "Overwrite"
 array_width=100
