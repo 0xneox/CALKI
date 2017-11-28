@@ -299,6 +299,11 @@ impl From<u64> for ServerId {
         ServerId(val)
     }
 }
+impl Into<u64> for ServerId {
+    fn into(self) -> u64 {
+        self.o
+    }
+}
 
 impl fmt::Debug for ServerId {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
