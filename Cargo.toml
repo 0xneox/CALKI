@@ -1,18 +1,19 @@
 [workspace]
-members = ["devtools"
+members = ["auth"
 ,"jsonrpc"
 ,"chain"
-,"chain/core"
-,"chain/types"
 ,"consensus/tdmint"
+,"consensus/txpool"
+,"consensus/raft"
+,"consensus/authority_round"
 ,"network"
+,"tools/create_key_addr"
+,"tools/monitor"
 ,"tests/trans_evm"
 ,"tests/chain_performance"
-,"tests/amqp/request"
-,"tests/amqp/response"
+,"tests/amqp"
+,"tests/latency"
+,"tests/jsonrpc_performance"
+,"tests/benchmark_ws"
+,"tests/chain_performance_by_mq"
 ]
-exclude =[
-"share_libs/parity"
-]
-
-
