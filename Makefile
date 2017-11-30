@@ -10,6 +10,7 @@
 # make release
 ################################################################################
 CARGO=RUSTFLAGS='-F warnings' cargo
+.RECIPEPREFIX +=
 
 debug:
     $(CARGO) build --all
