@@ -2,7 +2,7 @@
 description = "CALKI node."
 name = "raft"
 version = "0.6.0"
-author = <"neohex262@gmail.com">
+
 
 [dependencies]
 dotenv = "0.10.0"
