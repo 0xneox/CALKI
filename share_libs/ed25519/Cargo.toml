@@ -1,3 +1,8 @@
+[package]
+name = "cita-ed25519"
+version = "0.6.0"
+authors = ["jiksz"]
+
 [dependencies]
 rustc-serialize = "0.3"
 sodiumoxide = { git = "https://github.com/cryptape/sodiumoxide.git", rev = "c324e11a2db461ec6878c55bd6616f75b2e4d16a" }
