@@ -1,4 +1,7 @@
-
+[package]
+name = "auth"
+version = "0.1.0"
+authors = ["jiksz"]
 
 [dependencies]
 clap = "2"
@@ -21,3 +24,4 @@ calki-crypto = { path = "../share_libs/crypto"}
 tx_pool = {path = "../share_libs/tx_pool"}
 core = { path = "../chain/core" }
 uuid = { version = "0.4", features = ["v4"] }
+clippy = {version = "0.0.148", optional = true}
