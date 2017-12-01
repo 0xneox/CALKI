@@ -1,6 +1,7 @@
 [package]
 name = "create_key_addr"
 version = "0.1.0"
+authors = ["jiksz"]
 
 
 [dependencies]
