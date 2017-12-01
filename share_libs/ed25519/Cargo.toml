@@ -1,5 +1,5 @@
 [package]
-name = "cita-ed25519"
+name = "calki-ed25519"
 version = "0.6.0"
 authors = ["jiksz"]
 
