@@ -1,0 +1,8 @@
+[package]
+name = "pubsub_rabbitmq"
+version = "0.1.0"
+authors = ["jiksz"]
+
+[dependencies.amqp]
+version = "0.1"
+default-features = false
