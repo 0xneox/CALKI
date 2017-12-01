@@ -301,7 +301,7 @@ impl From<u64> for ServerId {
 }
 impl Into<u64> for ServerId {
     fn into(self) -> u64 {
-        self.o
+        self.0
     }
 }
 
