@@ -1,0 +1,13 @@
+[package]
+description = "CALKI node."
+name = "latency"
+version = "0.1.0"
+
+
+[[bin]]
+path = "latency.rs"
+name = "latency"
+
+
+[dependencies]
+pubsub = { path = "../../share_libs/pubsub" }
