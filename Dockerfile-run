@@ -1,5 +1,0 @@
-FROM ubuntu:16.04
-ENV PATH $PATH:/calki/bin
-COPY . /calki
-RUN echo "/calki/lib" > /etc/ld.so.conf.d/calki.conf \
-	&& ldconfig
