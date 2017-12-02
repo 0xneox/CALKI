@@ -27,7 +27,7 @@ use ws;
 #[derive(Default)]
 pub struct MqHandler {
     transfer_type: TransferType,
-    
+
     ws_responses: Arc<Mutex<HashMap<Vec<u8>, (ReqInfo, ws::Sender)>>>,
     responses: Arc<RwLock<HashMap<Vec<u8>, Response>>>,
 }

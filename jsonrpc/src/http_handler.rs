@@ -39,7 +39,7 @@ impl BaseHandler for HttpHandler {}
 
 pub struct HttpHandler {
     pub tx: Arc<Mutex<Sender<(String, reqlib::Request)>>>,
- 
+
     pub responses: Arc<RwLock<HashMap<Vec<u8>, response::Response>>>,
     pub sleep_duration: usize,
     pub timeout_count: usize,
@@ -119,7 +119,7 @@ impl HttpHandler {
 
 impl Handler for HttpHandler {
     fn handle(&self, req: Request, res: Response) {
-        
+
         let data = match self.pase_url(req) {
             Err(err) => serde_json::to_string(&RpcFailure::from(err)),
             Ok(body) => {

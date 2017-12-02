@@ -30,7 +30,6 @@ use ws;
 use ws::{Factory, CloseCode, Handler};
 
 pub struct WsFactory {
-
     responses: Arc<Mutex<HashMap<Vec<u8>, (ReqInfo, ws::Sender)>>>,
     thread_pool: Arc<Mutex<ThreadPool>>,
     tx: Sender<(String, reqlib::Request)>,
@@ -100,7 +99,7 @@ impl Handler for WsHandler {
                     })
                 }
             };
-            
+
             if let Err(err) = err {
                 let _ = this.sender
                             .send(serde_json::to_string(&RpcFailure::from_options(req_id, jsonrpc_version, err)).unwrap());

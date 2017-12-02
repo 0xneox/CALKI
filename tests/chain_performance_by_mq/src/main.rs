@@ -63,7 +63,7 @@ fn create_contract(block_tx_num: u64, pre_hash: H256, flag: i32, h: u64, pub_sen
     let tx = Generateblock::generate_tx(code, contract_address.clone(), quota, flag_multi_sender, pk);
     txs.push(tx);
 
-   
+
     let (send_data, _block) = Generateblock::build_block_with_proof(txs, pre_hash, h);
     info!("===============send block===============");
     let mut sys_time_lock = sys_time.lock().unwrap();

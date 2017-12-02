@@ -373,10 +373,10 @@ impl Sendtx {
 
 
     pub fn start(&mut self) {
-    // Send a duplicate transaction
-     // send signature error transaction
-     // send the normal transaction
-     // Send Get block transaction, count the number of transactions in each block at the beginning of the normal transaction to the beginning of the transaction, timestamp, total number of aggregated transactions, time, tps
+        // Send a duplicate transaction
+        // send signature error transaction
+        // send the normal transaction
+        // Send Get block transaction, count the number of transactions in each block at the beginning of the normal transaction to the beginning of the transaction, timestamp, total number of aggregated transactions, time, tps
         if self.analysis {
             self.analyse_tx_info();
         } else {
@@ -384,7 +384,7 @@ impl Sendtx {
             self.dispatch_thd(sync_send);
             let v_url = self.get_url();
             let _url = v_url[0].clone();
-          // jsonrpc returns the number of successes == The successful number of blocks exited the loop
+            // jsonrpc returns the number of successes == The successful number of blocks exited the loop
             self.wait(self.totaltx, sync_recv, _url);
         }
 

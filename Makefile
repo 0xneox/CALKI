@@ -9,7 +9,7 @@
 # 1.6) refer to env.sh
 ################################################################################
 CARGO=RUSTFLAGS='-F warnings' cargo
-.RECIPEPREFIX +=
+
 debug:
 	$(CARGO) build --all
 	mkdir -p admintool/release/bin
