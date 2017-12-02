@@ -1,5 +1,5 @@
 
-e//! This example demonstrates using Raft to implement a replicated hashmap over `n` servers and
+//! This example demonstrates using Raft to implement a replicated hashmap over `n` servers and
 //! interact with them over `m` clients.
 //!
 //! This example uses Serde serialization.
@@ -66,7 +66,8 @@ Commands:
 
 Usage:
   hashmap get <key> (<node-address>)...
-  hashmap put <key> <new-value> (<node-address>)...
+  hashmap put \
+                              <key> <new-value> (<node-address>)...
   hashmap cas <key> <expected-value> <new-value> (<node-address>)...
   hashmap server <id> (<node-address>)...
   hashmap (-h | --help)
