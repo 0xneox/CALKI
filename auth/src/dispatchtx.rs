@@ -188,7 +188,7 @@ impl Dispatchtx {
     }
 
     pub fn add_tx_to_pool(&self, tx: &SignedTransaction) -> bool {
-       
+
         let ref mut txs_pool = self.txs_pool.borrow_mut();
         let success = txs_pool.enqueue(tx.clone());
         if self.wal_enable {
@@ -213,11 +213,11 @@ impl Dispatchtx {
     }
 
     pub fn del_txs_from_pool_with_hash(&self, txs: &HashSet<H256>) {
-        
+
         {
             self.txs_pool.borrow_mut().update_with_hash(txs);
         }
-        
+
         if self.wal_enable {
             let mut wal = self.wal.clone();
             let txs = txs.clone();
@@ -228,11 +228,11 @@ impl Dispatchtx {
     }
 
     pub fn del_txs_from_pool(&self, txs: Vec<SignedTransaction>) {
-     
+
         {
             self.txs_pool.borrow_mut().update(&txs);
         }
-        
+
         if self.wal_enable {
             let mut wal = self.wal.clone();
             thread::spawn(move || for tx in txs {

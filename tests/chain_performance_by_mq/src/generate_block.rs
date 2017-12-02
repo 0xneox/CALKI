@@ -77,7 +77,7 @@ impl Generateblock {
         tx.set_data(data);
         tx.set_nonce("0".to_string());
         tx.set_quota(quota);
-      
+
         tx.set_to(address);
         tx.set_valid_until_block(99999);
         tx.sign(pv)
